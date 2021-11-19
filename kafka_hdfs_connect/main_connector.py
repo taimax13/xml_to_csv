@@ -45,8 +45,11 @@ class KafkaConnect:
         consumer = kafka.KafkaConsumer(group_id='test', bootstrap_servers=self.BOOTSTRAP_SERVERS)
         return consumer.topics()
 
+class ConnectHive:
+    pass
+    #todo subscribe to topic return hive "select * from topic"
 
-class Connect:
+class ConnectHdfs:
     def __init__(self, host, port, user):
         self.host=host
         self.port=port
@@ -72,7 +75,7 @@ def main():
     producer = KafkaProducer(bootstrap_servers=['localhost:9092'],
                              value_serializer=lambda x:
                              dumps(x).encode('utf-8'))
-    connector_hdfs=Connect("nodename", 8020, "hduser")
+    connector_hdfs=ConnectHdfs("nodename", 8020, "hduser")
     if not (q in kafka.list_topics("testID")):
         kafka.create_topic("proton")
         kafka.register_kafka_listener('topic1', kafka.kafka_listener("created"))

@@ -30,7 +30,8 @@ class HttpConnector:
             except:
                 print("Key error %s",item)
 
-        df.to_csv('./processed_data.csv', index=False)
+        #df.to_csv('./processed_data.csv', index=False)
+        #todo hive to parquet
 
 
 def main():
