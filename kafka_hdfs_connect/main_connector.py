@@ -3,6 +3,9 @@ import uuid
 from kafka.admin import KafkaAdminClient, NewTopic
 import pyarrow as pa  # hdfs api #https://medium.com/analytics-vidhya/hadoop-single-node-cluster-on-docker-e88c3d09a256
 
+import xml_to_csv.transformer
+
+
 class KafkaConnect:
     BOOTSTRAP_SERVERS = ['localhost:9092']
 
@@ -60,17 +63,24 @@ class Connect:
 
 
 def main():
+    q = 'proton'
+    host = "http://export.arxiv.org/"
+    api_v = "api"
+    query_word = "proton";
+    max_res = 100
     kafka = KafkaConnect()
     producer = KafkaProducer(bootstrap_servers=['localhost:9092'],
                              value_serializer=lambda x:
                              dumps(x).encode('utf-8'))
     connector_hdfs=Connect("nodename", 8020, "hduser")
-    if not ("proton" in kafka.list_topics("testID")):
+    if not (q in kafka.list_topics("testID")):
         kafka.create_topic("proton")
         kafka.register_kafka_listener('topic1', kafka.kafka_listener("created"))
-        producer.send('topic1', value=uuid.UUID[0, 6])
+
+        http_connect = xml_to_csv.transformer.HttpConnector(host, api_v,query_word, max_res)
+        r = http_connect.request_data()
     else:
-        #todo hive get table by topic name
+        producer.send(q, value=uuid.UUID[0, 6])
 
 
 
