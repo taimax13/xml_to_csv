@@ -37,7 +37,7 @@ def main():
     host = "http://export.arxiv.org/"
     api_v = "api"
     query_word = "proton";
-    max_res = 5
+    max_res = 100
     http_connect = HttpConnector(host, api_v,query_word, max_res)
     r = http_connect.request_data()
     print(type(r))
